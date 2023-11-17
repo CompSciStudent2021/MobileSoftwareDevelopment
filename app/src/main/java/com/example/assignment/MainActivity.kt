@@ -16,7 +16,7 @@ import com.google.android.material.navigation.NavigationView
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-class MainActivity : AppCompatActivity(), OnMapReadyCallback {
+class MainActivity<Treasure> : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var drawerLayout: DrawerLayout
@@ -79,6 +79,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             drawerLayout.openDrawer(GravityCompat.START)
         }
     }
+
+    // Function to start TreasureDetailsActivity with data...
+    fun startTreasureDetails(selectedTreasure: Treasure) {
+        val intent = Intent(this, TreasureDetailsActivity::class.java)
+        intent.putExtra("treasureName", selectedTreasure.name)
+        intent.putExtra("descriptionText", selectedTreasure.description)
+        intent.putExtra("cluesText", selectedTreasure.clues)
+        startActivity(intent)
 }
 
 class ActivityThree {
@@ -91,4 +99,5 @@ class ActivityTwo {
 
 class ActivityOne {
 
+}
 }
