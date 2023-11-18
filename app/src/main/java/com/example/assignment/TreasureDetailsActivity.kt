@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 
 class TreasureDetailsActivity : AppCompatActivity() {
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_treasure_details)
@@ -39,7 +38,7 @@ class TreasureDetailsActivity : AppCompatActivity() {
                 velocityX: Float,
                 velocityY: Float
             ): Boolean {
-                val deltaX: Float = e2.x - e1.x
+                val deltaX: Float = e2.x - e1!!.x
                 if (deltaX > 0) {
                     // User swiped from left to right (navigate back)
                     onBackPressed()

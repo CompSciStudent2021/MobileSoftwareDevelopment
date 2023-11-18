@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Input fields for treasure found, date, time, personal notes -->
+        <EditText
+            android:id="@+id/editTextTreasureName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Treasure Name"
+            android:inputType="text"
+            android:imeOptions="actionDone" />
+
+        <EditText
+            android:id="@+id/editTextDescriptionText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Treasure Name"
+            android:inputType="text"
+            android:imeOptions="actionDone" />
+
+        <EditText
+            android:id="@+id/editTextCluesText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Treasure Name"
+            android:inputType="text"
+            android:imeOptions="actionDone" />
+
+        <!-- Button to save log -->
+        <Button
+            android:id="@+id/buttonSaveLog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save Log" />
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

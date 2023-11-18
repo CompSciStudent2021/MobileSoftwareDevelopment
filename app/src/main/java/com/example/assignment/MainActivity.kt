@@ -2,7 +2,6 @@ package com.example.assignment
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -15,12 +14,15 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.navigation.NavigationView
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import com.example.assignment.Treasure
+
 
 class MainActivity<Treasure> : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
+    val selectedTreasure = Treasure("Treasure Name", "Description", "Clues")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +74,7 @@ class MainActivity<Treasure> : AppCompatActivity(), OnMapReadyCallback {
     }
 
     // Function to handle drawer toggle button clicks
-    fun onDrawerToggle(view: View) {
+    fun onDrawerToggle() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
@@ -80,14 +82,14 @@ class MainActivity<Treasure> : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    // Function to start TreasureDetailsActivity with data...
-    fun startTreasureDetails(selectedTreasure: Treasure) {
+    // Function to start TreasureDetailsActivity with data
+    /*fun startTreasureDetails(selectedTreasure : Treasure) {
         val intent = Intent(this, TreasureDetailsActivity::class.java)
-        intent.putExtra("treasureName", selectedTreasure.name)
-        intent.putExtra("descriptionText", selectedTreasure.description)
-        intent.putExtra("cluesText", selectedTreasure.clues)
+        intent.putExtra("treasureName", selectedTreasure.treasureName)
+        intent.putExtra("descriptionText", selectedTreasure.descriptionText)
+        intent.putExtra("cluesText", selectedTreasure.cluesText)
         startActivity(intent)
-}
+    }*/
 
 class ActivityThree {
 
