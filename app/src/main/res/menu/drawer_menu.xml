@@ -1,13 +1,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_item1"
-            android:title="Activity One" />
+            android:id="@+id/button_treasure_list"
+            android:title="Treasure List"
+            android:onClick="openTreasureList"/>
         <item
-            android:id="@+id/nav_item2"
-            android:title="Activity Two" />
+            android:id="@+id/button_log_entry"
+            android:title="Log Entry"
+            android:onClick="openLogEntry"/>
         <item
-            android:id="@+id/nav_item3"
-            android:title="Activity Three" />
+            android:id="@+id/MainActivity"
+            android:title="Map" />
     </group>
 </menu>

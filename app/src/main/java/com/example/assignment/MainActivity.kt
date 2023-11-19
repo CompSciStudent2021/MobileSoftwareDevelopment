@@ -2,6 +2,7 @@ package com.example.assignment
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -15,14 +16,15 @@ import com.google.android.material.navigation.NavigationView
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import com.example.assignment.Treasure
+import android.view.View
 
 
-class MainActivity<Treasure> : AppCompatActivity(), OnMapReadyCallback {
+
+class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
-    val selectedTreasure = Treasure("Treasure Name", "Description", "Clues")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +40,9 @@ class MainActivity<Treasure> : AppCompatActivity(), OnMapReadyCallback {
         // Handle navigation item clicks
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.nav_item1 -> startActivity(Intent(this, ActivityOne::class.java))
-                R.id.nav_item2 -> startActivity(Intent(this, ActivityTwo::class.java))
-                R.id.nav_item3 -> startActivity(Intent(this, ActivityThree::class.java))
+                R.id.button_treasure_list -> startActivity(Intent(this, TreasureList::class.java))
+                R.id.button_log_entry -> startActivity(Intent(this, LogEntry::class.java))
+                R.id.MainActivity -> startActivity(Intent(this, MainActivity::class.java))
             }
             // Close the drawer when an item is selected
             drawerLayout.closeDrawer(GravityCompat.START)
@@ -74,7 +76,7 @@ class MainActivity<Treasure> : AppCompatActivity(), OnMapReadyCallback {
     }
 
     // Function to handle drawer toggle button clicks
-    fun onDrawerToggle() {
+    fun onDrawerToggle(view: View) {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
@@ -91,15 +93,19 @@ class MainActivity<Treasure> : AppCompatActivity(), OnMapReadyCallback {
         startActivity(intent)
     }*/
 
-class ActivityThree {
+    fun openTreasureList(item: MenuItem) {
+        val intent = Intent(this, TreasureList::class.java)
+        startActivity(intent)
+    }
 
-}
+    fun openLogEntry(item: MenuItem) {
+        val intent = Intent(this, LogEntry::class.java)
+        startActivity(intent)
+    }
 
-class ActivityTwo {
+    fun MainActivity(clickedView: View) {
+        val intent = Intent(this, LogEntry::class.java)
+        startActivity(intent)
+    }
 
-}
-
-class ActivityOne {
-
-}
 }

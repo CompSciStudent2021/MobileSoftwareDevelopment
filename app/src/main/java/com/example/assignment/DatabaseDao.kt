@@ -1,4 +1,4 @@
-package com.example.assignment.ui.theme
+/*package com.example.assignment
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -6,12 +6,11 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.assignment.Treasure
 
 @Dao
 interface DatabaseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(Treasure: Treasure)
+    fun insertLogEntry(Treasure: LogEntry)
 
     @Query("SELECT * FROM Treasure")
     fun getAll(): LiveData<List<Treasure>>
@@ -24,4 +23,4 @@ interface DatabaseDao {
 
     @Query("DELETE FROM Treasure WHERE id = :id")
     fun delete(id: Int?)
-}
+}*/
