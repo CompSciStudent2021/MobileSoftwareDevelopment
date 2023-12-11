@@ -6,9 +6,9 @@ import androidx.room.PrimaryKey;
 public class Treasure{
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private String name;
-    private double latitude;
-    private double longitude;
+    private static String name;
+    private static double latitude;
+    private static double longitude;
 
     public int getId() {
         return id;
@@ -18,7 +18,7 @@ public class Treasure{
         this.id = id;
     }
 
-    public String getName() {
+    public static String getName() {
         return name;
     }
 
@@ -26,7 +26,7 @@ public class Treasure{
         this.name = name;
     }
 
-    public Double getLatitude() {
+    public static double getLatitude() {
         return latitude;
     }
 
@@ -34,7 +34,7 @@ public class Treasure{
         this.latitude = latitude;
     }
 
-    public Double getLongitude() {
+    public static double getLongitude() {
         return longitude;
     }
 

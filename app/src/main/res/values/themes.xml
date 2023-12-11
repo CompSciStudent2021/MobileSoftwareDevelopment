@@ -2,14 +2,5 @@
 <resources>
 
     <style name="Theme.Assignment" parent="android:Theme.Material.Light.NoActionBar" />
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Other theme attributes -->
-        <item name="colorPrimary">@color/your_primary_color</item>
-        <item name="android:theme">@style/AppTheme.AppBarOverlay</item>
-        <item name="android:popupTheme">@style/AppTheme.PopupOverlay</item>
-    </style>
-
-    <!-- Define your AppBarOverlay style -->
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar"></style>
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+    <style name="AppTheme" parent="Theme.AppCompat"></style>
 </resources>

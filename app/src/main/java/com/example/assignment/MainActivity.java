@@ -1,5 +1,6 @@
 package com.example.assignment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -42,6 +43,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Context context = getApplicationContext(); // Get the application context
+
+        context.deleteDatabase("treasure_database");
+
 
         // Initializing the map fragment
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
@@ -98,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 LatLng location = new LatLng(latitude, longitude);
                 mMap.addMarker(new MarkerOptions().position(location).title(name));
-                
+
                 new InsertAsyncTask(treasureDatabase).execute(treasure);
 
                 // Enable user interaction like zoom controls, etc.

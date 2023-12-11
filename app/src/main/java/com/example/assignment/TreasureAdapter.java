@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class TreasureAdapter extends RecyclerView.Adapter<TreasureAdapter.Treasu
         }
     }
 
+
     @Override
     public TreasureViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_treasure, parent, false);
@@ -33,8 +35,10 @@ public class TreasureAdapter extends RecyclerView.Adapter<TreasureAdapter.Treasu
 
     @Override
     public void onBindViewHolder(TreasureViewHolder holder, int position) {
-        Treasure currentTreasure = treasures.get(position);
-        holder.treasureName.setText(currentTreasure.getName());
+        if (holder != null) {
+            Treasure currentTreasure = treasures.get(position);
+            holder.treasureName.setText(currentTreasure.getName());
+        }
     }
 
     @Override
