@@ -12,7 +12,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 public abstract class TreasureDatabase extends RoomDatabase {
     private static TreasureDatabase INSTANCE;
 
-    public abstract DatabaseDao databaseDao(); // Change 'Database' to 'DatabaseDao'
+    public static DatabaseDao databaseDao() // Change 'Database' to 'DatabaseDao'
+    {
+        return null;
+    }
 
     // Define your migrations
     static final Migration MIGRATION_1_2 = new Migration(1, 2) {

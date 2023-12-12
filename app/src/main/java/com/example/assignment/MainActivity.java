@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
 
@@ -32,7 +34,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
+    public static GoogleMap mMap;
     private DrawerLayout drawerLayout;
     private NavigationView navView;
 
@@ -44,80 +46,84 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Context context = getApplicationContext(); // Get the application context
+        // Initialize views and database
+        initViews();
+        initDatabase();
 
-        context.deleteDatabase("treasure_database");
+        // Fetch data from Room database
+        fetchDataFromDatabase();
 
+        Button toggleButton = findViewById(R.id.btnMenu);
+        toggleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onDrawerToggle(v);
+            }
+        });
+    }
 
-        // Initializing the map fragment
+    private void initViews() {
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navView = findViewById(R.id.nav_view);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
-
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navView = findViewById(R.id.nav_view);
-
-        // Initialize treasureDatabase
-        treasureDatabase = Room.databaseBuilder(getApplicationContext(), TreasureDatabase.class, "treasure_database").build();
-
-
-        // Handle navigation item clicks
-        navView.setNavigationItemSelectedListener(menuItem -> {
-            int itemId = menuItem.getItemId();
-
-            if (itemId == R.id.button_treasure_list) {
-                startActivity(new Intent(this, TreasureList.class));
-            } else if (itemId == R.id.button_log_entry) {
-                startActivity(new Intent(this, LogEntry.class));
-            } else if (itemId == R.id.MainActivity) {
-                startActivity(new Intent(this, MainActivity.class));
-            }
-
-            // Close the drawer when an item is selected
-            drawerLayout.closeDrawer(GravityCompat.START);
-            return true;
-        });
     }
+
+    private void initDatabase() {
+        treasureDatabase = Room.databaseBuilder(getApplicationContext(), TreasureDatabase.class, "treasure_database").build();
+        databaseDao = treasureDatabase.databaseDao();
+    }
+
+    private void fetchDataFromDatabase() {
+        RetrieveLocationsAsyncTask asyncTask = new RetrieveLocationsAsyncTask(treasureDatabase);
+        asyncTask.execute();
+    }
+
+    // AsyncTask to retrieve locations from Room database
+    private class RetrieveLocationsAsyncTask extends AsyncTask<Void, Void, List<Treasure>> {
+        private TreasureDatabase database;
+
+        public RetrieveLocationsAsyncTask(TreasureDatabase database) {
+            this.database = database;
+        }
+
+        @Override
+        protected List<Treasure> doInBackground(Void... voids) {
+            if (database != null) {
+                DatabaseDao dao = database.databaseDao();
+                if (dao != null) {
+                    return dao.getAllTreasures();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<Treasure> treasures) {
+            super.onPostExecute(treasures);
+
+            if (treasures != null && mMap != null) {
+                mMap.clear();
+
+                for (Treasure treasure : treasures) {
+                    LatLng location = new LatLng(treasure.getLatitude(), treasure.getLongitude());
+                    mMap.addMarker(new MarkerOptions().position(location).title(treasure.getName()));
+                }
+            }
+        }
+    }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        try (InputStream inputStream = getResources().openRawResource(R.raw.wonders);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-
-            // Read the header line (skip it)
-            reader.readLine();
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] tokens = line.split(",");
-                String name = tokens[0];
-                double latitude = Double.parseDouble(tokens[1]);
-                double longitude = Double.parseDouble(tokens[2]);
-
-                Treasure treasure = new Treasure();
-                treasure.setName(name);
-                treasure.setLatitude(latitude);
-                treasure.setLongitude(longitude);
-
-                LatLng location = new LatLng(latitude, longitude);
-                mMap.addMarker(new MarkerOptions().position(location).title(name));
-
-                new InsertAsyncTask(treasureDatabase).execute(treasure);
-
-                // Enable user interaction like zoom controls, etc.
-                mMap.getUiSettings().setZoomControlsEnabled(true);
-            }
-
-            // Set camera to show all markers
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(0.0, 0.0), 2f));
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // Fetch data from Room database
+        new RetrieveLocationsAsyncTask(treasureDatabase).execute();
     }
+
 
     // Function to handle drawer toggle button clicks
     public void onDrawerToggle(View view) {

@@ -10,6 +10,14 @@ public class Treasure{
     private static double latitude;
     private static double longitude;
 
+    public Treasure() {}
+
+    public Treasure(String name, double latitude, double longitude) {
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
     public int getId() {
         return id;
     }

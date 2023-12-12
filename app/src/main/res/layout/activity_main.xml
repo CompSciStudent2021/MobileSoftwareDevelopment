@@ -6,12 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- FrameLayout to hold the map and button -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Map Fragment to display the map -->
+        <!-- Map Fragment -->
         <fragment
             android:id="@+id/mapFragment"
             android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -20,18 +19,17 @@
 
         <!-- Toggle Drawer Button -->
         <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onDrawerToggle"
-        android:text="Menu"
-        android:layout_margin="16dp"
-        android:background="@drawable/button_border"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:layout_gravity="start"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"/>
-
+            android:id="@+id/btnMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Menu"
+            android:layout_margin="16dp"
+            android:background="@drawable/button_border"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:layout_gravity="start"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp" />
     </FrameLayout>
 
     <!-- NavigationView for the drawer -->

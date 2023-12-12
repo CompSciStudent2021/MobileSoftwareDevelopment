@@ -1,6 +1,7 @@
 package com.example.assignment;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -11,6 +12,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,21 +28,24 @@ public class TreasureList extends AppCompatActivity {
     private DatabaseDao databaseDao;
     private ExecutorService executorService;
 
-    private List<Treasure> treasureList = new ArrayList<>();
+    List<Treasure> treasureList = new ArrayList<>();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.item_treasure);
+        setContentView(R.layout.activity_treasure_list);
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navView = findViewById(R.id.nav_view);
 
-        // Correct RecyclerView initialization and setting LayoutManager
         recyclerView = findViewById(R.id.recyclerViewId);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new TreasureAdapter(this, treasureList);
+        recyclerView.setAdapter(adapter);
 
-        database = TreasureDatabase.getInstance(this);
+        database = Room.databaseBuilder(getApplicationContext(), TreasureDatabase.class, "treasure_database").build();
         databaseDao = database.databaseDao();
         executorService = Executors.newSingleThreadExecutor();
 
@@ -56,19 +61,31 @@ public class TreasureList extends AppCompatActivity {
             return true;
         });
 
-        executorService.execute(() -> {
-            treasureList = databaseDao.getAllTreasures();
-
-            runOnUiThread(() -> {
-                // Initialize adapter and set it to RecyclerView
-                adapter = new TreasureAdapter(this, treasureList);
-                recyclerView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-            });
-        });
+        retrieveAndDisplayTreasures();
     }
 
+    private void retrieveAndDisplayTreasures() {
+        if (databaseDao != null) {
+            new RetrieveTreasuresAsyncTask().execute();
+        }
+    }
 
+    private class RetrieveTreasuresAsyncTask extends AsyncTask<Void, Void, List<Treasure>> {
+        @Override
+        protected List<Treasure> doInBackground(Void... voids) {
+            return databaseDao.getAllTreasures();
+        }
+
+        @Override
+        protected void onPostExecute(List<Treasure> treasures) {
+            super.onPostExecute(treasures);
+            if (treasures != null) {
+                treasureList.clear();
+                treasureList.addAll(treasures);
+                adapter.notifyDataSetChanged();
+            }
+        }
+    }
 
     public void onDrawerToggle(View view) {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {

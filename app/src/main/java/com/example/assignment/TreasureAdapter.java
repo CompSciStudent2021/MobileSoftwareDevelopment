@@ -19,10 +19,14 @@ public class TreasureAdapter extends RecyclerView.Adapter<TreasureAdapter.Treasu
 
     public static class TreasureViewHolder extends RecyclerView.ViewHolder {
         public final TextView treasureName;
+        public final TextView latitude;
+        public final TextView longitude;
 
         public TreasureViewHolder(View itemView) {
             super(itemView);
             treasureName = itemView.findViewById(R.id.textTreasureName);
+            latitude = itemView.findViewById(R.id.textViewLatitude);
+            longitude = itemView.findViewById(R.id.textViewLongitude);
         }
     }
 
@@ -37,9 +41,12 @@ public class TreasureAdapter extends RecyclerView.Adapter<TreasureAdapter.Treasu
     public void onBindViewHolder(TreasureViewHolder holder, int position) {
         if (holder != null) {
             Treasure currentTreasure = treasures.get(position);
-            holder.treasureName.setText(currentTreasure.getName());
+            holder.treasureName.setText(String.valueOf(currentTreasure.getName()));
+            holder.latitude.setText(String.valueOf(currentTreasure.getLatitude())); // Set latitude
+            holder.longitude.setText(String.valueOf(currentTreasure.getLongitude())); // Set longitude
         }
     }
+
 
     @Override
     public int getItemCount() {
